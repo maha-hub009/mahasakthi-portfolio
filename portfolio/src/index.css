@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --glow-x: 50%;
+  --glow-y: 50%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-obsidian text-ink-100 font-body antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- Custom scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7c3aed, #22d3ee);
+  border-radius: 999px;
+  border: 2px solid #0b0f19;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8b5cf6, #67e8f9);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #7c3aed #0b0f19;
+}
+
+/* ---------- Glass surface ---------- */
+.glass {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Tilt card: glow tracks cursor via CSS vars set in JS ---------- */
+.tilt-card {
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition: transform 0.12s ease-out, box-shadow 0.3s ease;
+  will-change: transform;
+}
+.tilt-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    320px circle at var(--glow-x) var(--glow-y),
+    rgba(124, 58, 237, 0.65),
+    rgba(34, 211, 238, 0.25) 35%,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.tilt-card:hover::before {
+  opacity: 1;
+}
+
+/* ---------- Eyebrow label ---------- */
+.eyebrow {
+  @apply font-mono text-[11px] tracking-[0.3em] uppercase text-cyan-glow/80;
+}
+
+/* ---------- Gradient text ---------- */
+.text-gradient {
+  background: linear-gradient(120deg, #a78bfa, #22d3ee 55%, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
